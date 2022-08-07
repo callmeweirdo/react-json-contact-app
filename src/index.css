@@ -3,7 +3,7 @@
 body {
   margin: 0;
   font-family: "Ubuntu Mono", monospace;
-  background-color: rgba(201, 93, 165, 0.452);
+  background-color: rgba(201, 93, 165, 0.452) !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

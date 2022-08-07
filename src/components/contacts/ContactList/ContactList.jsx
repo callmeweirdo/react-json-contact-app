@@ -14,7 +14,7 @@ const ContactList = () => {
               <div className="col">
                 <p className="h3">
                   Contact Manager
-                  <Link to={"/contacts/list"} className="btn btn-primary ms-2 ">
+                  <Link to={"/contacts/add"} className="btn btn-primary ms-2 ">
                     <i className="fa fa-plus-circle me-2 " /> New
                   </Link>
                 </p>

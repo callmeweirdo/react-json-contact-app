@@ -30,19 +30,19 @@ const ContactCard = () => {
               </div>
               <div className="col-md-1 flex-column d-flex align-items-center ">
                 <Link
-                  to={"/conatcts/view/:123456"}
+                  to={"/contacts/view/:123456"}
                   className="btn btn-warning my-1 "
                 >
                   <i className="fa fa-eye"></i>
                 </Link>
                 <Link
-                  to={"/conatcts/view/:123456"}
+                  to={`/contacts/edit/:123456`}
                   className="btn btn-primary my-1"
                 >
                   <i className="fa fa-pen"></i>
                 </Link>
                 <Link
-                  to={"/conatcts/view/:123456"}
+                  to={"/contacts/view/:123456"}
                   className="btn btn-danger my-1"
                 >
                   <i className="fa fa-trash"></i>
