@@ -1,5 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ContactCard from "./ContactCard";
+
+import "./ContactList.css";
 
 const ContactList = () => {
   return (
@@ -25,8 +28,8 @@ const ContactList = () => {
             </div>
             <div className="row">
               <div className="col-md-6">
-                <form className="row">
-                  <div className="col">
+                <form className="row align-items-center ">
+                  <div className="col ">
                     <div className="mb-2">
                       <input
                         type="text"
@@ -44,6 +47,17 @@ const ContactList = () => {
                 </form>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="contact-list">
+        <div className="container">
+          <div className="row">
+            <ContactCard />
+            <ContactCard />
+            <ContactCard />
+            <ContactCard />
           </div>
         </div>
       </section>
