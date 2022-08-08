@@ -1,30 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const ContactCard = () => {
+const ContactCard = ({ contact }) => {
+  const { name, email, mobile, company, photo } = contact;
   return (
-    <div className="col-md-6">
+    <div className="col-md-6 ">
       <div className="row">
-        <div className="card">
+        <div className="card  ">
           <div className="card-body">
             <div className="row align-items-center d-flex justify-content-around ">
               <div className="col-md-4">
-                <img
-                  src="../../../Weirdologo.png"
-                  alt=""
-                  className="contact-logo "
-                />
+                <img src={photo} alt="" className="contact-logo " />
               </div>
               <div className="col-md-7">
                 <ul className="list-group ">
                   <li className="list-group-item list-group-item-action ">
-                    Name: <span className="fw-bold">Og</span>
+                    Name: <span className="fw-bold">{name}</span>
                   </li>
                   <li className="list-group-item list-group-item-action">
-                    Email: <span className="fw-bold">Og@gmail.com</span>
+                    Email: <span className="fw-bold">{email}</span>
                   </li>
                   <li className="list-group-item list-group-item-action">
-                    Number: <span className="fw-bold">101101101101</span>
+                    Number: <span className="fw-bold">{mobile}</span>
                   </li>
                 </ul>
               </div>

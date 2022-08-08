@@ -1,10 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ContactCard from "./ContactCard";
+import Spinner from "../../spiner/Spinner";
+
+import { apiService } from "../../../server/apiServer";
 
 import "./ContactList.css";
 
 const ContactList = () => {
+  const [state, setState] = useState({
+    loading: false,
+    contacts: [],
+    erorMsg: "",
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setState((prev) => ({ ...prev, loading: true }));
+      try {
+        const response = await apiService.getAllContacts();
+        setState((prev) => ({
+          ...prev,
+          contacts: response.data,
+          loading: false,
+        }));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const { loading, contacts, erorMsg } = state;
+
   return (
     <>
       <section className="contact-search  p-3 ">
@@ -51,16 +79,19 @@ const ContactList = () => {
         </div>
       </section>
 
-      <section className="contact-list">
-        <div className="container">
-          <div className="row">
-            <ContactCard />
-            <ContactCard />
-            <ContactCard />
-            <ContactCard />
+      {loading ? (
+        <Spinner />
+      ) : (
+        <section className="contact-list">
+          <div className="container">
+            <div className="row">
+              {contacts.map((contact) => (
+                <ContactCard contact={contact} key={contact.id} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </>
   );
 };
