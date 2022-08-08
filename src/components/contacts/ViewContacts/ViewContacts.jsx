@@ -1,8 +1,48 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { apiService } from "../../../server/apiServer";
+import Spinner from "../../spiner/Spinner";
 import "./ViewContact.css";
 
 const ViewContacts = () => {
+  const [state, setState] = useState({
+    loading: false,
+    contact: {},
+    group: {},
+    error: "",
+  });
+  const { contactId } = useParams();
+
+  useEffect(() => {
+    setState({ ...state, loading: true });
+    const getContact = async () => {
+      try {
+        let response = await apiService.getContact(contactId);
+        let data = response.data;
+        let groupResponse = await apiService.getGroupId(data.groupId);
+        let groupData = groupResponse.data;
+        console.log("====================================");
+        console.log(data, groupData);
+        console.log("====================================");
+        setState({
+          ...state,
+          loading: false,
+          contact: data,
+          group: groupData,
+        });
+      } catch (error) {
+        setState({
+          ...state,
+          error: error,
+        });
+      }
+    };
+
+    getContact();
+  }, [contactId]);
+
+  const { loading, error, contact, group } = state;
+
   return (
     <>
       <section className="view-contact">
@@ -20,49 +60,64 @@ const ViewContacts = () => {
           </div>
         </div>
       </section>
-      <section className="view-contact-details my-3 ">
-        <div className="container">
-          <div className="row align-items-center  ">
-            <div className="col-sm-5 col-md-3 ">
-              <img
-                src="../../../Weirdologo.png"
-                alt=""
-                className="view-contact-logo img-fluid "
-              />
-            </div>
 
-            <div className="col-md-7">
-              <div className="py-4">
-                <ul className="list-group ">
-                  <li className="list-group-item list-group-item-action ">
-                    Name: <span className="fw-bold">Og</span>
-                  </li>
-                  <li className="list-group-item list-group-item-action">
-                    Email: <span className="fw-bold">Og@gmail.com</span>
-                  </li>
-                  <li className="list-group-item list-group-item-action">
-                    Number: <span className="fw-bold">101101101101</span>
-                  </li>
-                  <li className="list-group-item list-group-item-action">
-                    Title: <span className="fw-bold">101101101101</span>
-                  </li>
-                  <li className="list-group-item list-group-item-action">
-                    Company: <span className="fw-bold">101101101101</span>
-                  </li>
-                  <li className="list-group-item list-group-item-action">
-                    Category: <span className="fw-bold">101101101101</span>
-                  </li>
-                </ul>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <section className="view-contact-details my-3 ">
+          <div className="container">
+            <div className="row align-items-center  ">
+              {contact && group && (
+                <>
+                  <div className="col-sm-5 col-md-3 ">
+                    <img
+                      src={contact.photo}
+                      alt=""
+                      className="view-contact-logo img-fluid "
+                    />
+                  </div>
+
+                  <div className="col-md-7">
+                    <div className="py-4">
+                      <ul className="list-group ">
+                        <li className="list-group-item list-group-item-action ">
+                          Name: <span className="fw-bold">{contact.name} </span>
+                        </li>
+                        <li className="list-group-item list-group-item-action">
+                          Email:{" "}
+                          <span className="fw-bold">{contact.email}</span>
+                        </li>
+                        <li className="list-group-item list-group-item-action">
+                          Number:{" "}
+                          <span className="fw-bold">{contact.mobile} </span>
+                        </li>
+                        <li className="list-group-item list-group-item-action">
+                          Title:{" "}
+                          <span className="fw-bold">{contact.title} </span>
+                        </li>
+                        <li className="list-group-item list-group-item-action">
+                          Company:{" "}
+                          <span className="fw-bold"> {contact.company} </span>
+                        </li>
+                        <li className="list-group-item list-group-item-action">
+                          Category:{" "}
+                          <span className="fw-bold">{group.name} </span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <div className="my-3">
+                <Link to={"/"} className="btn btn-success ">
+                  Back
+                </Link>
               </div>
             </div>
-            <div className="my-3">
-              <Link to={"/"} className="btn btn-success ">
-                Back
-              </Link>
-            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </>
   );
 };

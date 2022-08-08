@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const ContactCard = ({ contact }) => {
-  const { name, email, mobile, company, photo } = contact;
+const ContactCard = ({ contact, allContacts, onDelete }) => {
+  const { id, name, email, mobile, company, photo } = contact;
   return (
     <div className="col-md-6 ">
       <div className="row">
@@ -27,23 +27,23 @@ const ContactCard = ({ contact }) => {
               </div>
               <div className="col-md-1 flex-column d-flex align-items-center ">
                 <Link
-                  to={"/contacts/view/:123456"}
+                  to={`/contacts/view/${id}`}
                   className="btn btn-warning my-1 "
                 >
                   <i className="fa fa-eye"></i>
                 </Link>
                 <Link
-                  to={`/contacts/edit/:123456`}
+                  to={`/contacts/edit/${id}`}
                   className="btn btn-primary my-1"
                 >
                   <i className="fa fa-pen"></i>
                 </Link>
-                <Link
-                  to={"/contacts/view/:123456"}
+                <button
+                  onClick={() => onDelete(id)}
                   className="btn btn-danger my-1"
                 >
                   <i className="fa fa-trash"></i>
-                </Link>
+                </button>
               </div>
             </div>
           </div>

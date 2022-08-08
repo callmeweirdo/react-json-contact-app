@@ -16,8 +16,8 @@ const ContactList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setState((prev) => ({ ...prev, loading: true }));
       try {
+        setState((prev) => ({ ...prev, loading: true }));
         const response = await apiService.getAllContacts();
         setState((prev) => ({
           ...prev,
@@ -30,6 +30,25 @@ const ContactList = () => {
     };
     fetchData();
   }, []);
+
+  const onDelete = async (contactId) => {
+    try {
+      const response = await apiService.deleteCotact(contactId);
+      if (response) {
+        const allContacts = await apiService.getAllContacts();
+        setState((prev) => ({
+          ...prev,
+          contacts: allContacts.data,
+          loading: false,
+        }));
+      }
+    } catch (error) {
+      setState((prev) => ({
+        ...prev,
+        erorMsg: error.message,
+      }));
+    }
+  };
 
   const { loading, contacts, erorMsg } = state;
 
@@ -86,7 +105,12 @@ const ContactList = () => {
           <div className="container">
             <div className="row">
               {contacts.map((contact) => (
-                <ContactCard contact={contact} key={contact.id} />
+                <ContactCard
+                  onDelete={onDelete}
+                  allContacts={contacts}
+                  contact={contact}
+                  key={contact.id}
+                />
               ))}
             </div>
           </div>
