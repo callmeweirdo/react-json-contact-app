@@ -8,11 +8,31 @@ import { apiService } from "../../../server/apiServer";
 import "./ContactList.css";
 
 const ContactList = () => {
+  const [query, setQuery] = useState({
+    text: "",
+  });
   const [state, setState] = useState({
     loading: false,
     contacts: [],
+    filteredContacts: [],
     erorMsg: "",
   });
+
+  const seachContacts = (event) => {
+    setQuery({
+      ...query,
+      text: event.target.value,
+    });
+
+    let searches = state.contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+
+    setState({
+      ...state,
+      filteredContacts: searches,
+    });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +42,7 @@ const ContactList = () => {
         setState((prev) => ({
           ...prev,
           contacts: response.data,
+          filteredContacts: response.data,
           loading: false,
         }));
       } catch (error) {
@@ -39,6 +60,7 @@ const ContactList = () => {
         setState((prev) => ({
           ...prev,
           contacts: allContacts.data,
+          filteredContacts: allContacts.data,
           loading: false,
         }));
       }
@@ -50,7 +72,7 @@ const ContactList = () => {
     }
   };
 
-  const { loading, contacts, erorMsg } = state;
+  const { loading, contacts, filteredContacts, erorMsg } = state;
 
   return (
     <>
@@ -82,6 +104,8 @@ const ContactList = () => {
                         type="text"
                         name="search"
                         id="search"
+                        value={query.text}
+                        onChange={seachContacts}
                         placeholder="search Contacts"
                       />
                     </div>
@@ -104,7 +128,7 @@ const ContactList = () => {
         <section className="contact-list">
           <div className="container">
             <div className="row">
-              {contacts.map((contact) => (
+              {filteredContacts.map((contact) => (
                 <ContactCard
                   onDelete={onDelete}
                   allContacts={contacts}
